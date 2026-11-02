@@ -1,6 +1,5 @@
 # MGDT: Multigrid Anisotropic Diffusion Transformer
 
-Official PyTorch implementation of
 
 MGDT replaces softmax self-attention with **edge-preserving anisotropic diffusion on a sparse token graph**,
 solved with a **multigrid V-cycle**. Similar tokens exchange information through high-conductance edges while

@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "MGDT: Multigrid Anisotropic Diffusion Transformer"
+authors:
+  - family-names: Korban
+    given-names: Matthew
+  - family-names: Youngs
+    given-names: Peter
+  - family-names: Acton
+    given-names: Scott T.
+license: MIT
+preferred-citation:
+  type: article
+  title: "MGDT: Multigrid Anisotropic Diffusion Transformer"
+  authors:
+    - family-names: Korban
+      given-names: Matthew
+    - family-names: Youngs
+      given-names: Peter
+    - family-names: Acton
+      given-names: Scott T.
+  journal: "IEEE Transactions on Pattern Analysis and Machine Intelligence"
+  year: 2026

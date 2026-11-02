@@ -1,0 +1,84 @@
+# Cityscapes semantic segmentation (19 classes), full-resolution 1024x2048 validation mIoU.
+task: segmentation
+seed: 0
+deterministic: false
+output_dir: outputs/cityscapes
+
+data:
+  dataset: cityscapes
+  root: data/cityscapes               # leftImg8bit/{train,val}/<city>, gtFine/{train,val}/<city>
+  train_split: train
+  val_split: val
+  scale: [2048, 1024]
+  ratio_range: [0.5, 2.0]
+  crop_size: [1024, 1024]
+  cat_max_ratio: 0.75
+  num_workers: 8
+  test:
+    mode: whole
+    scale: null
+    boundary_tolerance: 3
+
+model:
+  name: mgdt_segmenter
+  pretrained: outputs/imagenet1k/final.pth
+  pretrained_ema: true
+  out_indices: [3, 5, 7, 11]
+  decoder_channels: 320
+  fuse_kernel: 1
+  pool_scales: [1, 2, 3, 6]
+  dropout: 0.0
+  backbone:
+    img_size: 224
+    patch_size: 16
+    embed_dim: 768
+    depth: 12
+    num_heads: 12
+    mlp_ratio: 4.0
+    drop_rate: 0.0
+    drop_path_rate: 0.1
+    grad_checkpointing: true
+    mixer:
+      type: mgdt
+      k: 16
+      local_radius: 1
+      levels: 2
+      coarsening: hem
+      coarsen_factor: 2
+      hem_rounds: 4
+      pre_smooth: 1
+      post_smooth: 1
+      coarse_steps: 2
+      tau: 0.5
+      normalization: degree
+      conductance: exp
+      threshold: null
+      kappa_init: 5.0
+      kappa_mode: head
+      kappa_warmup: true
+      kappa_warmup_start: 0.1
+      similarity: key
+      metric: l2
+      clip_norm: 5.0
+      drop_threshold: 1.0e-4
+
+optim:
+  lr: 6.0e-5
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+
+schedule:
+  iters: 80000
+  warmup_iters: 1500
+  kappa_warmup_frac: 0.05
+  scheduler: poly
+  power: 1.0
+  min_lr: 0.0
+
+train:
+  batch_size: 8
+  accum_steps: 1
+  amp: fp16
+  eval_interval_iters: 8000
+  ckpt_interval_iters: 4000
+  log_interval: 50

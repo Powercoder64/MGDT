@@ -1,0 +1,8 @@
+torch>=2.1
+torchvision>=0.16
+timm>=0.9
+av>=10.0
+pyyaml>=6.0
+numpy>=1.23
+pillow>=9.0
+matplotlib>=3.6

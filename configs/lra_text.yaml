@@ -1,0 +1,66 @@
+# Long Range Arena byte-level text classification (IMDB), 4096-token inputs, test accuracy.
+task: text
+seed: 0
+deterministic: false
+output_dir: outputs/lra_text
+
+data:
+  root: data/lra/aclImdb          # train/{neg,pos}/*.txt and test/{neg,pos}/*.txt
+  train_split: train
+  eval_split: test
+  max_len: 4096
+  num_workers: 4
+
+model:
+  name: mgdt_text
+  num_classes: 2
+  vocab_size: 257
+  embed_dim: 128
+  depth: 6
+  num_heads: 4
+  mlp_ratio: 4.0
+  dropout: 0.1
+  drop_path_rate: 0.0
+  mixer:
+    type: mgdt
+    k: 16
+    local_radius: 1
+    levels: 1
+    coarsening: hem
+    coarsen_factor: 2
+    hem_rounds: 4
+    pre_smooth: 1
+    post_smooth: 1
+    coarse_steps: 2
+    tau: 0.5
+    normalization: degree
+    conductance: exp
+    threshold: null
+    kappa_init: 2.0
+    kappa_mode: head
+    kappa_warmup: true
+    kappa_warmup_start: 0.1
+    similarity: key
+    metric: l2
+    clip_norm: 5.0
+    drop_threshold: 1.0e-4
+
+optim:
+  lr: 3.0e-4
+  weight_decay: 0.01
+  betas: [0.9, 0.999]
+
+schedule:
+  epochs: 50
+  warmup_iters: 4000
+  kappa_warmup_epochs: 5
+  scheduler: cosine
+  min_lr: 1.0e-6
+
+train:
+  batch_size: 64
+  eval_batch_size: 64
+  accum_steps: 1
+  amp: fp16
+  eval_interval: 1
+  log_interval: 50

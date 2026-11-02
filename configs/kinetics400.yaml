@@ -1,0 +1,81 @@
+# Kinetics-400 action recognition (32-frame 224x224 clips, 4 temporal clips x 3 spatial crops at test time).
+task: kinetics
+seed: 0
+deterministic: false
+output_dir: outputs/kinetics400
+
+data:
+  root: data/kinetics400/videos          # video files; paths in the lists are relative to this folder
+  train_list: data/kinetics400/train.csv # rows: path,label  (created by tools/prepare_kinetics.py)
+  val_list: data/kinetics400/val.csv
+  num_frames: 32
+  frame_stride: 2
+  img_size: 224
+  crop_scale: [0.08, 1.0]
+  repeated_aug: 2
+  test_clips: 4
+  test_crops: 3
+  num_workers: 10
+
+model:
+  name: mgdt_video
+  pretrained: outputs/imagenet1k/final.pth
+  pretrained_ema: true
+  num_classes: 400
+  img_size: 224
+  num_frames: 32
+  tubelet_size: 2
+  patch_size: 16
+  embed_dim: 768
+  depth: 12
+  num_heads: 12
+  mlp_ratio: 4.0
+  drop_rate: 0.0
+  drop_path_rate: 0.1
+  head_drop: 0.1
+  temporal_depth: 10
+  grad_checkpointing: true
+  mixer:                     # shared by the space-time and temporal blocks
+    type: mgdt
+    k: 32
+    local_radius: 1
+    levels: 2
+    coarsening: hem
+    coarsen_factor: 2
+    hem_rounds: 4
+    pre_smooth: 1
+    post_smooth: 1
+    coarse_steps: 2
+    tau: 0.5
+    normalization: degree
+    conductance: exp
+    threshold: null
+    kappa_init: 5.0
+    kappa_mode: head
+    kappa_warmup: true
+    kappa_warmup_start: 0.1
+    similarity: key
+    metric: l2
+    clip_norm: 5.0
+    drop_threshold: 1.0e-4
+
+optim:
+  lr: 5.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.999]
+
+schedule:
+  epochs: 120
+  warmup_epochs: 10
+  kappa_warmup_epochs: 5
+  scheduler: cosine
+  min_lr: 1.0e-6
+
+train:
+  batch_size: 256           # global number of clips (videos x repeated_aug)
+  eval_batch_size: 16
+  accum_steps: 1
+  amp: fp16
+  label_smoothing: 0.0
+  eval_interval: 10
+  log_interval: 20

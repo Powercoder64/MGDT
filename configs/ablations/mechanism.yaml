@@ -1,0 +1,10 @@
+# Core mechanism: anisotropic MGDT vs isotropic diffusion (g(s) = 1) vs drop-in softmax attention.
+# All variants share backbone, widths, heads, schedule and resolution. The softmax mixer reuses the
+# key projection as query (shared_qk) so that every variant has the same parameter count.
+benchmarks: [imagenet1k, ade20k]
+variants:
+  anisotropic: {}
+  isotropic:
+    mixer: {conductance: isotropic}
+  softmax:
+    mixer: {type: softmax, shared_qk: true}

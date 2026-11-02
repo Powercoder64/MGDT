@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mgdt"
+version = "1.0.0"
+description = "MGDT: Multigrid Anisotropic Diffusion Transformer"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Matthew Korban" },
+    { name = "Peter Youngs" },
+    { name = "Scott T. Acton" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.1",
+    "torchvision>=0.16",
+    "timm>=0.9",
+    "av>=10.0",
+    "pyyaml>=6.0",
+    "numpy>=1.23",
+    "pillow>=9.0",
+    "matplotlib>=3.6",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0", "pycocoevalcap>=1.2"]
+
+[tool.setuptools.packages.find]
+include = ["mgdt*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

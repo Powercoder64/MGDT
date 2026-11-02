@@ -1,0 +1,16 @@
+# Explicit Euler step size tau, pre/post-smoothing counts and degree normalisation (one V-cycle per layer,
+# identical coarsening). Runs whose loss stays non-finite are recorded as diverged in results.json.
+benchmarks: [imagenet1k, kinetics400]
+variants:
+  tau0.25_s0_unnorm:
+    mixer: {tau: 0.25, pre_smooth: 0, post_smooth: 0, normalization: none}
+  tau0.50_s1_unnorm:
+    mixer: {tau: 0.5, pre_smooth: 1, post_smooth: 1, normalization: none}
+  tau0.50_s1_norm:
+    mixer: {tau: 0.5, pre_smooth: 1, post_smooth: 1, normalization: degree}
+  tau0.50_s2_norm:
+    mixer: {tau: 0.5, pre_smooth: 2, post_smooth: 2, normalization: degree}
+  tau0.75_s1_unnorm:
+    mixer: {tau: 0.75, pre_smooth: 1, post_smooth: 1, normalization: none}
+  tau0.75_s1_norm:
+    mixer: {tau: 0.75, pre_smooth: 1, post_smooth: 1, normalization: degree}

@@ -1,0 +1,17 @@
+# Conductance family and kappa policy. "warmup" ramps the sharpness 1/kappa during the first
+# epochs (5% of iterations for segmentation); the hard threshold zeroes g for s >= 2 * kappa.
+# Segmentation results include the thin-boundary F-score (Fb).
+benchmarks: [ade20k, kinetics700]
+variants:
+  rational_fixed:
+    mixer: {conductance: rational, kappa_mode: fixed, kappa_warmup: false, threshold: null}
+  rational_layer:
+    mixer: {conductance: rational, kappa_mode: layer, kappa_warmup: false, threshold: null}
+  exp_fixed:
+    mixer: {conductance: exp, kappa_mode: fixed, kappa_warmup: false, threshold: null}
+  exp_warmup:
+    mixer: {conductance: exp, kappa_mode: fixed, kappa_warmup: true, threshold: null}
+  exp_head_warmup:
+    mixer: {conductance: exp, kappa_mode: head, kappa_warmup: true, threshold: null}
+  hard_threshold:
+    mixer: {conductance: exp, kappa_mode: head, kappa_warmup: true, threshold: 2.0}

@@ -1,0 +1,25 @@
+# FLOP-matched core-mechanism ablation. Only the graph/diffusion budget of the diffusion variants is
+# increased so that full forward-pass FLOPs match the drop-in softmax baseline; backbone, parameters,
+# resolution, schedule and evaluation are unchanged. On ImageNet-1K (196 tokens) the standard MGDT
+# settings already match the softmax FLOPs, so no extra budget is added there. Verify with:
+#   python tools/count_flops.py --config configs/ade20k.yaml --opts model.backbone.mixer.k=48 ...
+benchmarks: [imagenet1k, ade20k]
+variants:
+  mgdt_standard: {}
+  mgdt_flop_matched:
+    benchmark_opts:
+      ade20k:
+        model.backbone.mixer.k: 48
+        model.backbone.mixer.levels: 2
+        model.backbone.mixer.pre_smooth: 2
+        model.backbone.mixer.post_smooth: 2
+  isotropic_flop_matched:
+    mixer: {conductance: isotropic}
+    benchmark_opts:
+      ade20k:
+        model.backbone.mixer.k: 48
+        model.backbone.mixer.levels: 2
+        model.backbone.mixer.pre_smooth: 2
+        model.backbone.mixer.post_smooth: 2
+  softmax:
+    mixer: {type: softmax, shared_qk: true}

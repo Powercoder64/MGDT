@@ -1,0 +1,76 @@
+# Ego4D Natural Language Queries; Recall@1 at temporal IoU 0.3 / 0.5 on the validation split.
+# Clip features come from the Kinetics MGDT video encoder (tools/extract_video_features.py).
+task: grounding
+seed: 0
+deterministic: false
+output_dir: outputs/ego4d_nlq
+
+data:
+  train_json: data/ego4d/annotations/nlq_train.json
+  val_json: data/ego4d/annotations/nlq_val.json
+  feature_dir: data/ego4d/mgdt_features        # <clip_uid>.pt tensors of shape (T, 768)
+  feature_dim: 768
+  feature_fps: 1.875                           # 30 fps video, one feature every 16 frames
+  max_len: 1024
+  temporal_jitter: 0.1
+  max_query_len: 32
+  min_word_count: 1
+  max_span: null
+  num_workers: 8
+
+model:
+  name: mgdt_grounding
+  d_model: 256
+  num_heads: 4
+  text_layers: 2
+  fusion_layers: 2
+  temporal_depth: 4
+  mlp_ratio: 4.0
+  dropout: 0.1
+  query_dropout: 0.1
+  drop_path_rate: 0.1
+  mixer:
+    type: mgdt
+    k: 32
+    local_radius: 1
+    levels: 2
+    coarsening: hem
+    coarsen_factor: 2
+    hem_rounds: 4
+    pre_smooth: 1
+    post_smooth: 1
+    coarse_steps: 2
+    tau: 0.5
+    normalization: degree
+    conductance: exp
+    threshold: null
+    kappa_init: 5.0
+    kappa_mode: head
+    kappa_warmup: true
+    kappa_warmup_start: 0.1
+    similarity: shared
+    shared_dim: 64
+    metric: l2
+    clip_norm: 5.0
+    drop_threshold: 1.0e-4
+
+optim:
+  lr: 3.0e-4
+  weight_decay: 0.05
+  betas: [0.9, 0.999]
+
+schedule:
+  epochs: 25
+  warmup_epochs: 3
+  kappa_warmup_epochs: 5
+  scheduler: cosine
+  min_lr: 1.0e-6
+
+train:
+  batch_size: 64
+  eval_batch_size: 32
+  accum_steps: 1
+  amp: fp16
+  inside_loss_weight: 1.0
+  eval_interval: 1
+  log_interval: 20

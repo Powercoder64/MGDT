@@ -1,0 +1,12 @@
+# Kinetics-700 action recognition; identical recipe to Kinetics-400 with 700 classes.
+_base_: kinetics400.yaml
+
+output_dir: outputs/kinetics700
+
+data:
+  root: data/kinetics700/videos
+  train_list: data/kinetics700/train.csv
+  val_list: data/kinetics700/val.csv
+
+model:
+  num_classes: 700

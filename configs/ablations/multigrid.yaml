@@ -1,0 +1,20 @@
+# Multigrid depth and coarsening: hierarchy depth L, heavy-edge matching vs k-means, 2x vs 4x reduction.
+# Final evaluation also reports the mean per-cycle diffusion-energy reduction (energy_reduction).
+benchmarks: [kinetics400, ade20k]
+opts:
+  train.track_energy_at_eval: true
+variants:
+  L0:
+    mixer: {levels: 0}
+  L1_hem_2x:
+    mixer: {levels: 1, coarsening: hem, coarsen_factor: 2}
+  L1_kmeans_2x:
+    mixer: {levels: 1, coarsening: kmeans, coarsen_factor: 2}
+  L2_hem_2x:
+    mixer: {levels: 2, coarsening: hem, coarsen_factor: 2}
+  L2_hem_4x:
+    mixer: {levels: 2, coarsening: hem, coarsen_factor: 4}
+  L2_kmeans_2x:
+    mixer: {levels: 2, coarsening: kmeans, coarsen_factor: 2}
+  L3_hem_2x:
+    mixer: {levels: 3, coarsening: hem, coarsen_factor: 2}

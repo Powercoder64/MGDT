@@ -1,0 +1,15 @@
+# Similarity space, metric and symmetry used for the conductance distances.
+benchmarks: [imagenet1k, coco_captions]
+variants:
+  key_l2:
+    mixer: {similarity: key, metric: l2}
+  key_cos:
+    mixer: {similarity: key, metric: cos}
+  query_l2:
+    mixer: {similarity: query, metric: l2}
+  shared_l2:
+    mixer: {similarity: shared, metric: l2}
+  qk_l2:
+    mixer: {similarity: qk, metric: l2}
+  asym_l2:
+    mixer: {similarity: asym, metric: l2}

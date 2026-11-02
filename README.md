@@ -2,10 +2,6 @@
 
 Official PyTorch implementation of
 
-> **MGDT: Multigrid Anisotropic Diffusion Transformer**
-> Matthew Korban, Peter Youngs, and Scott T. Acton
-> *IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)*
-
 MGDT replaces softmax self-attention with **edge-preserving anisotropic diffusion on a sparse token graph**,
 solved with a **multigrid V-cycle**. Similar tokens exchange information through high-conductance edges while
 dissimilar tokens are separated by low-conductance boundaries; coarse graphs propagate global context and fine
@@ -366,17 +362,6 @@ consistency of the coarse operators, energy reduction of the V-cycle, mass conse
 the metrics. The end-to-end tests build tiny synthetic datasets in each benchmark's on-disk layout and run training,
 checkpointing, resuming and evaluation for every pipeline and tool on the CPU.
 
----
-
-## Citation
-
-```bibtex
-@article{korban2026mgdt,
-  title   = {{MGDT}: Multigrid Anisotropic Diffusion Transformer},
-  author  = {Korban, Matthew and Youngs, Peter and Acton, Scott T.},
-  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
-  year    = {2026}
-}
 ```
 
 ## License and acknowledgement

@@ -365,5 +365,4 @@ checkpointing, resuming and evaluation for every pipeline and tool on the CPU.
 
 ## License and acknowledgement
 
-Released under the MIT License (see `LICENSE`). This material is partly supported by the National Science Foundation
-under Grant No. 2322993.
+Released under the MIT License (see `LICENSE`).
